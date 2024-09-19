@@ -1,8 +1,4 @@
-self.addEventListener('install', event => {
-
-    //respuesta offline
-    const offline = new Response(`
-        <!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -14,11 +10,4 @@ self.addEventListener('install', event => {
     <div id="root"></div>
     <h1>Estás offline</h1>
   </body>
-</html> `, {
-    headers: { 'Content-Type': 'text/html' }
-});
-        const resp = fetch(event.request)
-        .catch(() => offline)
-
-        event.respondWith(resp)
-})
+</html> 
