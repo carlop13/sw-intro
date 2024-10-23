@@ -13,8 +13,27 @@ export default defineConfig({
       {
         src: "js/app.js",
         dest: "js"
+      },
+      {
+        src: "img",
+        dest: "assets" 
+      },
+      {
+        src: "public",
+        dest: "" 
+      },
+      {
+        src: "manifest.json",
+        dest: ""
       }]
     }),
     react()
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: "assets/index-001.js",
+      },
+    },
+  },
 });
