@@ -22,6 +22,14 @@ export default defineConfig({
         src: "public",
         dest: "" 
       },
+      { 
+        src: 'js/sw-utils.js', 
+        dest: 'js' 
+      },
+      { 
+        src: "offline.html", 
+        dest: "" 
+      },
       {
         src: "manifest.json",
         dest: ""

@@ -1,5 +1,7 @@
-const cacheStatic = "static-v1";
-const cacheDynamic = "dynamic-v1";
+const CACHE_STATIC = 'static-v1';
+const CACHE_INMUTABLE = 'inmutable-v1';
+const CACHE_DYNAMIC = 'dynamic-v1';
+importScripts('/js/sw-utils.js');
 
 // Crear una función para limpiar el caché
 const limpiarCache = (cacheName, numberItem) => {
@@ -13,57 +15,58 @@ const limpiarCache = (cacheName, numberItem) => {
 };
 
 // Evento de instalación para añadir archivos estáticos y offline.html al caché
-self.addEventListener("install", event => {
-    const cacheEstatico = caches.open(cacheStatic).then(cache => {
+self.addEventListener('install', (event) => {
+    const cacheStatic = caches.open(CACHE_STATIC).then((cache) => {
         return cache.addAll([
-            '/',
-            '/login',
-            'offline.html',
-            'index.html',
+            '/', 
+            '/index.html',
+            '/css/styles.css',
+            '/js/app.js',
             'manifest.json',
-            'img/29.png',
-            'img/40.png',
-            'img/57.png',
-            'img/58.png',
-            'img/60.png',
-            'img/80.png',
-            'img/87.png',
-            'img/114.png',
-            'img/120.png',
-            'img/180.png',
-            'img/1024.png',
+            'offline.html',
+            '/js/sw-utils.js',
             'src/assets/notFound.PNG'
         ]);
     });
-    event.waitUntil(cacheEstatico);
+
+    const cacheInmutable = caches.open(CACHE_INMUTABLE).then((cache) => {
+        return cache.addAll([
+            'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap',
+        ]);
+    });
+
+    event.waitUntil(Promise.all([cacheStatic, cacheInmutable]));
 });
 
-// Evento de fetch para manejar las solicitudes y mostrar offline.html cuando no hay conexión
-self.addEventListener('fetch', event => {
-    const url = new URL(event.request.url);
 
-    if (url.pathname === '/login') {
-        event.respondWith(
-            fetch(event.request).catch(() => {
-                return caches.match('/offline.html');
+self.addEventListener('activate', (event) => {
+    const cacheCleaned = caches.keys().then((keys) => {
+        return Promise.all(
+            keys.map((key) => {
+                if (key !== CACHE_STATIC && key !== CACHE_INMUTABLE && key !== CACHE_DYNAMIC) {
+                    return caches.delete(key);
+                }
             })
         );
-    } else {
-        // Caché con fallback a la red para otras rutas
-        event.respondWith(
-            caches.match(event.request).then(response => {
-                return response || fetch(event.request).then(newResponse => {
-                    return caches.open(cacheDynamic).then(cache => {
-                        cache.put(event.request, newResponse.clone());
-                        limpiarCache(cacheDynamic, 20); // Limpiar caché dinámico
-                        return newResponse;
-                    });
-                }).catch(() => {
-                    if (event.request.headers.get('accept').includes('text/html')) {
-                        return caches.match('/offline.html');
-                    }
-                });
+    });
+    event.waitUntil(cacheCleaned);
+});
+
+
+// Evento de fetch para manejar las solicitudes y mostrar offline.html cuando no hay conexión
+self.addEventListener('fetch', (event) => {
+    const response = caches.match(event.request)
+        .then((response) => {
+
+            if (response) return res;
+        
+            return fetch(event.request)
+                .then((newRes) => {
+                    return actualizarCacheDinamico(CACHE_DYNAMIC, event.request, newRes);
             })
-        );
-    }
+    }).catch(() => {
+        return caches.match('/offline.html');
+    });
+
+    event.respondWith(response);
 });
