@@ -40,4 +40,31 @@
   .read-the-docs {
     color: #888;
   }
+
+  /* App.css */
+
+.container {
+  padding: 20px;
+  background-color: #f7f7f7; /* Color de fondo suave */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para un efecto elevado */
+}
+
+.create-section {
+  margin-bottom: 20px; /* Espacio debajo del formulario de creación */
+  text-align: center; /* Centrar el contenido */
+}
+
+.card-public {
+  padding: 16px; /* Espaciado interno de las tarjetas */
+  background-color: #fff; /* Fondo blanco para las tarjetas */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); /* Sombra de tarjeta */
+  transition: transform 0.3s; /* Transición para efectos al pasar el mouse */
+}
+
+.card-public:hover {
+  transform: translateY(-5px); /* Efecto al pasar el mouse */
+}
+
   

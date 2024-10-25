@@ -58,14 +58,16 @@ self.addEventListener('fetch', (event) => {
     const response = caches.match(event.request)
         .then((response) => {
 
-            if (response) return res;
+            if (response) return response;
         
             return fetch(event.request)
                 .then((newRes) => {
                     return actualizarCacheDinamico(CACHE_DYNAMIC, event.request, newRes);
             })
-    }).catch(() => {
-        return caches.match('/offline.html');
+    }).catch((error) => {
+        if (event.request.mode === 'navigate') {
+            return caches.match('/offline.html');
+        }
     });
 
     event.respondWith(response);
