@@ -41,22 +41,7 @@ function App() {
   return (
     <>
 
-<div className="container">
-      <div className="create-section">
-        <CreatePublic onCreatePost={handleCreatePost} />
-      </div>
-      <Row gutter={16}>
-        {publicaciones.map((pub, index) => (
-          <Col span={8} key={index}>
-            <div className="card-public">
-              <CardPublic publicacion={pub} />
-            </div>
-          </Col>
-        ))}
-      </Row>
-    </div>
 
-{/*}
     <Row gutter={16}>
       <Col span={8}>
         <Card
@@ -128,7 +113,7 @@ function App() {
   </Card>
 </Col>
 </Row>
-{*/}
+
 
 
 </>

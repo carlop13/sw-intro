@@ -1,0 +1,70 @@
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+  }
+  
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+      animation: logo-spin infinite 20s linear;
+    }
+  }
+  
+  .card {
+    padding: 2em;
+  }
+  
+  .read-the-docs {
+    color: #888;
+  }
+
+  /* App.css */
+
+.container {
+  padding: 20px;
+  background-color: #f7f7f7; /* Color de fondo suave */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para un efecto elevado */
+}
+
+.create-section {
+  margin-bottom: 20px; /* Espacio debajo del formulario de creación */
+  text-align: center; /* Centrar el contenido */
+}
+
+.card-public {
+  padding: 16px; /* Espaciado interno de las tarjetas */
+  background-color: #fff; /* Fondo blanco para las tarjetas */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); /* Sombra de tarjeta */
+  transition: transform 0.3s; /* Transición para efectos al pasar el mouse */
+}
+
+.card-public:hover {
+  transform: translateY(-5px); /* Efecto al pasar el mouse */
+}
+
+  

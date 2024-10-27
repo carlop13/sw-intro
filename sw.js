@@ -55,20 +55,33 @@ self.addEventListener('activate', (event) => {
 
 // Evento de fetch para manejar las solicitudes y mostrar offline.html cuando no hay conexión
 self.addEventListener('fetch', (event) => {
-    const response = caches.match(event.request)
-        .then((response) => {
-
-            if (response) return response;
-        
-            return fetch(event.request)
-                .then((newRes) => {
-                    return actualizarCacheDinamico(CACHE_DYNAMIC, event.request, newRes);
+    // Verifica si la solicitud es para una publicación (o datos dinámicos)
+    if (event.request.url.includes('/api/publicaciones')) {
+        // Estrategia de Network First
+        const response = fetch(event.request)
+            .then((newRes) => {
+                // Almacena en caché dinámico solo si la respuesta es exitosa
+                return actualizarCacheDinamico(CACHE_DYNAMIC, event.request, newRes.clone()).then(() => newRes);
             })
-    }).catch((error) => {
-        if (event.request.mode === 'navigate') {
-            return caches.match('/offline.html');
-        }
-    });
+            .catch(() => caches.match(event.request)); // Si falla, busca en el caché
 
-    event.respondWith(response);
+        event.respondWith(response);
+    } else {
+        // Estrategia de Cache First para otros archivos estáticos
+        const response = caches.match(event.request)
+            .then((response) => {
+                if (response) return response;
+
+                return fetch(event.request)
+                    .then((newRes) => {
+                        return actualizarCacheDinamico(CACHE_DYNAMIC, event.request, newRes);
+                    });
+            }).catch(() => {
+                if (event.request.mode === 'navigate') {
+                    return caches.match('/offline.html');
+                }
+            });
+
+        event.respondWith(response);
+    }
 });
