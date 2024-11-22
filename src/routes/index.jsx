@@ -20,9 +20,9 @@ const AppRoutes = () => {
         { 
             path: '/publicaciones', 
             element: (
-                <ProtectedRoute>
+
                     <Publicaciones />
-                </ProtectedRoute>
+
             ) 
         },
         { path: '/login', element: <Login /> },

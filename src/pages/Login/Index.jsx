@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import './Login.css';
 import { API_URL } from '../../utils/constans';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../../firebase';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const auth = getAuth();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -34,6 +37,21 @@ const Login = () => {
         } catch (error) {
             console.error('Error en la solicitud:', error);
             setError('Error en la conexión');
+        }
+    };
+
+    // Función para iniciar sesión con Google
+    const handleGoogleLogin = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            console.log('Sesión iniciada con Google:', result.user);
+
+            // Puedes redirigir al usuario a la página de publicaciones o a otra página
+            navigate('/publicaciones');
+        } catch (error) {
+            console.error('Error al iniciar sesión con Google:', error);
+            setError('No se pudo iniciar sesión con Google');
         }
     };
 
@@ -64,6 +82,9 @@ const Login = () => {
                     <button type="submit">Iniciar Sesión</button>
                     {error && <p className="error">{error}</p>}
                 </form>
+
+                {/* Botón para iniciar sesión con Google */}
+                <button onClick={handleGoogleLogin}>Iniciar Sesión con Google</button>
             </div>
         </div>
     );

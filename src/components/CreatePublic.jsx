@@ -1,6 +1,6 @@
 import React from 'react';
 import { createPost } from '../services/publicacionesService';
-import { Form, Input, Button, InputNumber, message } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 
 const CreatePublicacion = () => {
   const [form] = Form.useForm();
@@ -8,12 +8,12 @@ const CreatePublicacion = () => {
   const handleSubmit = async () => {
     try {
       // Obtiene los valores de los campos del formulario
-      const values = form.getFieldsValue();
+      const values = form.getFieldsValue(['name', 'author', 'review']);
+      
       const newPost = {
-        ...values,
-        pages: Number(values.pages),
-        price: Number(values.price),
-        year: Number(values.year),
+        name: values.name,
+        author: values.author,
+        review: values.review,
       };
 
       const result = await createPost(newPost);
@@ -28,17 +28,17 @@ const CreatePublicacion = () => {
 
   return (
     <Form
-      form={form}
-      layout="vertical"
-      onFinish={handleSubmit}
-      style={{
-        maxWidth: '600px',
-        margin: '0 auto',
-        padding: '20px',
-        background: '#fff',
-        borderRadius: '10px',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-      }}
+    form={form}
+    layout="vertical"
+    onFinish={handleSubmit}
+    style={{
+      maxWidth: '600px',
+      margin: '0 auto',
+      padding: '20px',
+      background: '#fff',
+      borderRadius: '10px',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+    }}
     >
       <Form.Item label="Título" name="name" rules={[{ required: true, message: 'Por favor ingresa el título' }]}>
         <Input placeholder="Título del libro" />
@@ -47,7 +47,7 @@ const CreatePublicacion = () => {
       <Form.Item label="Autor" name="author" rules={[{ required: true, message: 'Por favor ingresa el autor' }]}>
         <Input placeholder="Autor del libro" />
       </Form.Item>
-
+{/*}
       <Form.Item label="Editorial" name="editorial" rules={[{ required: true, message: 'Por favor ingresa la editorial' }]}>
         <Input placeholder="Editorial del libro" />
       </Form.Item>
@@ -67,7 +67,7 @@ const CreatePublicacion = () => {
       <Form.Item label="Género" name="genre" rules={[{ required: true, message: 'Por favor ingresa el género' }]}>
         <Input placeholder="Género literario" />
       </Form.Item>
-
+{*/}
       <Form.Item label="Reseña" name="review" rules={[{ required: true, message: 'Por favor ingresa una reseña' }]}>
         <Input.TextArea placeholder="Escribe una reseña" rows={4} />
       </Form.Item>
